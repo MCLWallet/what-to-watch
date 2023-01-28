@@ -81,7 +81,6 @@
       {{/if}}
 
       <div class="color-form">
-
         <!-- Our default paragraph/message -->
         {{#unless colorError}}
         {{#unless color}}
@@ -95,11 +94,9 @@
         {{/unless}}
         {{/unless}}
 
-        <!-- This randomize link communicates with the server (server.js) 
-               using a querystring and GET request instead of a form POST -->
-        <button>
-          <a href="?randomize=go">What should I watch today?</a>
-        </button> <br>
+        <form method="post">
+          <button type="submit">What should I watch today?</button>
+        </form>
       </div>
 
     </div>
