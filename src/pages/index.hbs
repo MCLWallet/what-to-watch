@@ -16,7 +16,13 @@
     href="https://cdn.glitch.global/1fbde62f-02ee-4e9a-8e2c-a7d5bcc4c1dc/touch-icon-iphone-retina.png">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>{{seo.title}}</title>
+  <title>
+    {{#if movie}}
+    {{movie.Title}} - {{seo.title}}
+    {{else}}
+    {{seo.title}}
+    {{/if}}
+  </title>
 
   <!-- Meta tags for SEO and social sharing -->
   <link rel="canonical" href="{{seo.url}}">

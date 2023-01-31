@@ -44,9 +44,96 @@ fastify.get("/", function (request, reply) {
   // params is an object we'll pass to our handlebars template
   let params = { seo: seo };
 
+  if (request.query.id) {
+    // Load watchlist data file
+    const watchlist = require("./src/watchlist.json");
+    const movie = watchlist.find(movie => movie.Const === request.query.id);
+    const movieError = null
+    
+    if (!movie) {
+      params.movieError = "Sorry, we couldn't find that movie.";
+    }
+
+    params = {
+      color: getRandomColor(),
+      colorError: null,
+      movie: movie,
+      movieError: movieError,
+      seo: seo,
+    };
+
+  }
   // The Handlebars code will be able to access the parameter values and build them into the page
   return reply.view("/src/pages/index.hbs", params);
 });
+
+/**
+ * Our get route to server the watchlist page as a JSON file
+ * 
+ * Returns src/watchlist.json
+ * 
+ */
+fastify.get("/watchlist", function (request, reply) {
+  // Load watchlist data file
+  const watchlist = require("./src/watchlist.json");
+
+  // If we have a query parameter, we'll return a single movie
+  if (request.query.id) {
+    const movie = watchlist.find(movie => movie.Const === request.query.id);
+    const movieError = null
+    
+    // If we can't find the movie, we'll return an error
+    if (!movie) {
+      return reply.send({error: "Sorry, we couldn't find that movie."})
+    }
+    // Otherwise, we'll return the movie
+    else {
+      return reply.send(movie);
+    }
+  }
+  // Otherwise, we'll return the entire watchlist
+  else {
+    return reply.send(watchlist);
+  }
+});
+
+/**
+ * Our get route to serve a single movie from the watchlist by id
+ * 
+ * Returns src/watchlist.json
+ * 
+ * Accepts a query parameter indicating the movie id
+ * 
+ */
+fastify.get("/watchlist/:id", function (request, reply) {
+  // Load watchlist data file
+  const watchlist = require("./src/watchlist.json");
+  const id = request.params.id;
+  const movie = watchlist.find(movie => movie.Const === id);
+  return reply.send(movie);
+});
+
+/**
+ * Our get route to server only movies of specific genres
+ * 
+ * Returns src/watchlist.json
+ * 
+ * Accepts a query parameter indicating the movie genres
+ * 
+ * Example: /watchlist/genres?genres=Action,Comedy
+ * 
+ */
+fastify.get("/watchlist/genres", function (request, reply) {
+  // Load watchlist data file
+  const watchlist = require("./src/watchlist.json");
+  const genres = request.query.genres.split(",");
+  const filteredWatchlist = watchlist.filter(movie => {
+    const movieGenres = movie.Genres.split(", ");
+    return genres.every(genre => movieGenres.includes(genre));
+  });
+  return reply.send(filteredWatchlist);
+});
+
 
 /**
  * Our POST route to handle and react to form submissions
@@ -59,28 +146,18 @@ fastify.post("/", function (request, reply) {
 
   // If someone clicks the "what should I watch?" button, we'll pick a random movie for them
   // We need to load our color data file, pick one at random, and add it to the params
-  const colors = require("./src/colors.json");
-  const allColors = Object.keys(colors);
-  let currentColor = getRandomIndex(allColors);
-
-    // Load watchlist data file
-  const watchlist = require("./src/watchlist.json");
-
-  // pick a random movie from the watchlist
-  const allMovies = Object.keys(watchlist);
-  let currentMovie = getRandomIndex(allMovies);
   
   // Add the movie & color properties to the params object
   params = {
-    color: colors[currentColor],
+    color: getRandomColor(),
     colorError: null,
-    movie: watchlist[currentMovie],
+    movie: getRandomMovie(),
     movieError: null,
     seo: seo,
   };
 
-  // The Handlebars template will use the parameter values to update the page with the chosen color
-  return reply.view("/src/pages/index.hbs", params);
+  // redirect to the home page with the query parameter
+  return reply.redirect(`/?id=${params.movie.Const}`, params)
 });
 
 // Run the server and report out to the logs
@@ -98,4 +175,18 @@ fastify.listen(
 // function that returns a random index from an array
 function getRandomIndex(array) {
   return array[(array.length * Math.random()) << 0];
+}
+
+function getRandomMovie() {
+  const watchlist = require("./src/watchlist.json");
+  const allMovies = Object.keys(watchlist);
+  let currentMovie = getRandomIndex(allMovies);
+  return watchlist[currentMovie];
+}
+
+function getRandomColor() {
+  const colors = require("./src/colors.json");
+  const allColors = Object.keys(colors);
+  let currentColor = getRandomIndex(allColors);
+  return colors[currentColor];
 }

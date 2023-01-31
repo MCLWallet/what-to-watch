@@ -83,7 +83,6 @@ a:not(.btn--remix):visited {
   font-style: normal;
   font-weight: normal;
   font-size: 1.1rem;
-  color: #000;
   text-decoration: none;
   border-style: none;
 }
@@ -228,4 +227,89 @@ label {
 
 h2 {
   color: #2800FF;
+}
+
+/* Media query for mobile phones (smaller text size, button size 100%) */
+@media only screen and (max-width: 600px) {
+  .title {
+    font-size: 50px;
+  }
+  .color-form {
+    width: 100%;
+  }
+  .color-form button {
+    width: 100%;
+  }
+  .color-form a {
+    width: 100%;
+  }
+  .color-form a:not(.btn--remix) {
+    margin-top: 0;
+  }
+  .color-form button {
+    margin-top: 0;
+  }
+  .color-form button:hover {
+    box-shadow: none;
+  }
+  .color-form input {
+    width: 100%;
+  }
+  .color-form label {
+    display: none;
+  }
+  .color-form .color-info {
+    margin-left: 0;
+  }
+  .color-search {
+    margin-top: 1rem;
+  }
+  .color-search p {
+    font-size: 0.75rem;
+  }
+  .color-search a {
+    font-size: 0.75rem;
+  }
+  .color-search a:hover {
+    text-decoration: underline;
+  }
+  .color-search a:not(.btn--remix) {
+    font-size: 0.75rem;
+  }
+  .color-search a:not(.btn--remix):hover {
+    text-decoration: underline;
+  }
+  .color-search button {
+    font-size: 0.75rem;
+  }
+  .color-search button:hover {
+    box-shadow: none;
+  }
+  .color-search label {
+    font-size: 0.75rem;
+  }
+  .color-search input {
+    font-size: 0.75rem;
+  }
+  .color-search .color-info {
+    font-size: 0.75rem;
+  }
+  .color-search .color-info a {
+    font-size: 0.75rem;
+  }
+  .color-search .color-info a:hover {
+    text-decoration: underline;
+  }
+  .color-search .color-info a:not(.btn--remix) {
+    font-size: 0.75rem;
+  }
+  .color-search .color-info a:not(.btn--remix):hover {
+    text-decoration: underline;
+  }
+  .color-search .color-info button {
+    font-size: 0.75rem;
+  }
+  .color-search .color-info button:hover {
+    box-shadow: none;
+  }
 }
