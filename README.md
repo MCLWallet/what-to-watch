@@ -18,7 +18,7 @@ returns all movies and series as a JSON
 
 returns a specific title by its id
 
-```/watchlist/genres?genres=Action,Comedy```
+```/watchlist?genres=Action,Comedy```
 
 returns titles with who are categorized in these genres
 

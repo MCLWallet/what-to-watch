@@ -91,6 +91,14 @@ fastify.get("/watchlist", function (request, reply) {
       return reply.send(movie);
     }
   }
+  if (request.query.genres) {
+    const genres = request.query.genres.split(",");
+    const filteredWatchlist = watchlist.filter(movie => {
+      const movieGenres = movie.Genres.split(", ");
+      return genres.every(genre => movieGenres.includes(genre));
+    });
+    return reply.send(filteredWatchlist);
+  }
   // Otherwise, we'll return the entire watchlist
   else {
     return reply.send(watchlist);
@@ -112,28 +120,6 @@ fastify.get("/watchlist/:id", function (request, reply) {
   const movie = watchlist.find(movie => movie.Const === id);
   return reply.send(movie);
 });
-
-/**
- * Our get route to server only movies of specific genres
- * 
- * Returns src/watchlist.json
- * 
- * Accepts a query parameter indicating the movie genres
- * 
- * Example: /watchlist/genres?genres=Action,Comedy
- * 
- */
-fastify.get("/watchlist/genres", function (request, reply) {
-  // Load watchlist data file
-  const watchlist = require("./src/watchlist.json");
-  const genres = request.query.genres.split(",");
-  const filteredWatchlist = watchlist.filter(movie => {
-    const movieGenres = movie.Genres.split(", ");
-    return genres.every(genre => movieGenres.includes(genre));
-  });
-  return reply.send(filteredWatchlist);
-});
-
 
 /**
  * Our POST route to handle and react to form submissions
