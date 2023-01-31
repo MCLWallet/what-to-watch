@@ -8,6 +8,18 @@ This project includes a Node.js server script and a web page that connects to it
 
 _Last updated: 11 Jan 2023_
 
+## API Features
+
+``` /watchlist ```
+
+returns all movies and series as a JSON
+
+```/watchlist?id=```
+
+returns a specific title by its id
+
+
+
 ## Prerequisites
 
 You'll get best use out of this project if you're familiar with basic JavaScript. If you've written JavaScript for client-side web pages this is a little different because it uses server-side JS, but the syntax is the same!
