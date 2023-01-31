@@ -4,7 +4,9 @@ An app that recommends random movies and series
 
 [Node.js](https://nodejs.org/en/about/) is a popular runtime that lets you run server-side JavaScript. This project uses the [Fastify](https://www.fastify.io/) framework and explores basic templating with [Handlebars](https://handlebarsjs.com/).
 
-_Last updated: 11 Jan 2023_
+Try the [LIVE DEMO](https://fixed-kindly-guardian.glitch.me/)
+
+_Last updated: 31 Jan 2023_
 
 ## API Features
 
