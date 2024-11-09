@@ -47,9 +47,9 @@ fastify.get("/", function (request, reply) {
   if (request.query.id) {
     // Load watchlist data file
     const watchlist = require("./src/watchlist.json");
-    const movie = watchlist.find(movie => movie.Const === request.query.id);
-    const movieError = null
-    
+    const movie = watchlist.find((movie) => movie.Const === request.query.id);
+    const movieError = null;
+
     if (!movie) {
       params.movieError = "Sorry, we couldn't find that movie.";
     }
@@ -61,7 +61,6 @@ fastify.get("/", function (request, reply) {
       movieError: movieError,
       seo: seo,
     };
-
   }
   // The Handlebars code will be able to access the parameter values and build them into the page
   return reply.view("/src/pages/index.hbs", params);
@@ -69,9 +68,9 @@ fastify.get("/", function (request, reply) {
 
 /**
  * Our get route to server the watchlist page as a JSON file
- * 
+ *
  * Returns src/watchlist.json
- * 
+ *
  */
 fastify.get("/watchlist", function (request, reply) {
   // Load watchlist data file
@@ -79,12 +78,12 @@ fastify.get("/watchlist", function (request, reply) {
 
   // If we have a query parameter, we'll return a single movie
   if (request.query.id) {
-    const movie = watchlist.find(movie => movie.Const === request.query.id);
-    const movieError = null
-    
+    const movie = watchlist.find((movie) => movie.Const === request.query.id);
+    const movieError = null;
+
     // If we can't find the movie, we'll return an error
     if (!movie) {
-      return reply.send({error: "Sorry, we couldn't find that movie."})
+      return reply.send({ error: "Sorry, we couldn't find that movie." });
     }
     // Otherwise, we'll return the movie
     else {
@@ -93,9 +92,9 @@ fastify.get("/watchlist", function (request, reply) {
   }
   if (request.query.genres) {
     const genres = request.query.genres.split(",");
-    const filteredWatchlist = watchlist.filter(movie => {
+    const filteredWatchlist = watchlist.filter((movie) => {
       const movieGenres = movie.Genres.split(", ");
-      return genres.every(genre => movieGenres.includes(genre));
+      return genres.every((genre) => movieGenres.includes(genre));
     });
     return reply.send(filteredWatchlist);
   }
@@ -107,18 +106,28 @@ fastify.get("/watchlist", function (request, reply) {
 
 /**
  * Our get route to serve a single movie from the watchlist by id
- * 
+ *
  * Returns src/watchlist.json
- * 
+ *
  * Accepts a query parameter indicating the movie id
- * 
+ *
  */
 fastify.get("/watchlist/:id", function (request, reply) {
   // Load watchlist data file
   const watchlist = require("./src/watchlist.json");
   const id = request.params.id;
-  const movie = watchlist.find(movie => movie.Const === id);
+  const movie = watchlist.find((movie) => movie.Const === id);
   return reply.send(movie);
+});
+
+/**
+ * Endpoint to get a single random movie
+ *
+ * Returns a random movie object from watchlist.json
+ */
+fastify.get("/random", function (request, reply) {
+  const randomMovie = getRandomMovie();
+  return reply.send(randomMovie);
 });
 
 /**
@@ -132,7 +141,7 @@ fastify.post("/", function (request, reply) {
 
   // If someone clicks the "what should I watch?" button, we'll pick a random movie for them
   // We need to load our color data file, pick one at random, and add it to the params
-  
+
   // Add the movie & color properties to the params object
   params = {
     color: getRandomColor(),
@@ -143,7 +152,7 @@ fastify.post("/", function (request, reply) {
   };
 
   // redirect to the home page with the query parameter
-  return reply.redirect(`/?id=${params.movie.Const}`, params)
+  return reply.redirect(`/?id=${params.movie.Const}`, params);
 });
 
 // Run the server and report out to the logs
